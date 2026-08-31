@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Martin Bastidas - Tablero de Hábitos</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Trebuchet MS', sans-serif;
+        background: #99e8d8;
+        color: #1f2a28;
+        max-width: 720px;
+        margin: 48px auto;
+        padding: 0 20px;
+      }
+      .encabezado {
+        margin-bottom: 28px;
+      }
+      .encabezado-nombre {
+        display: inline-block;
+        margin: 0 0 10px;
+        padding: 5px 12px;
+        background: #d7ecea;
+        color: #01696f;
+        font-size: 0.75rem;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        border-radius: 999px;
+      }
+      h1 {
+        color: #014f53;
+        margin: 0;
+        font-size: 2rem;
+        letter-spacing: -0.03em;
+      }
+      h1 span {
+        font-weight: normal;
+        color: #6b7573;
+      }
+      form {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 22px;
+        background: white;
+        padding: 8px;
+        border-radius: 14px;
+        border: 1px solid #dce6e4;
+      }
+      input[type='text'] {
+        flex: 1;
+        padding: 12px 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        outline: none;
+        background: transparent;
+      }
+      button {
+        background: #01696f;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #015256;
+      }
+      .contenedor {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      li {
+        background: white;
+        border: 1px solid #dce6e4;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        border-radius: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+      }
+      .hambito-texto {
+        flex: 1;
+      }
+      .completado {
+        background: #e7f4f2;
+        border-color: #c5e0dc;
+        color: #6b7573;
+      }
+      .completado .hambito-texto {
+        text-decoration: line-through;
+      }
+      .btn-eliminar {
+        background: transparent;
+        color: #c45b57;
+        border: none;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        border-radius: 8px;
+      }
+      .btn-eliminar:hover {
+        background: #fdecea;
+      }
+      .panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .stat {
+        background: white;
+        border: 1px solid #dce6e4;
+        border-radius: 14px;
+        padding: 16px;
+      }
+      .stat span {
+        display: block;
+        font-size: 0.78rem;
+        color: #6b7573;
+        margin-bottom: 6px;
+      }
+      .stat strong {
+        font-size: 1.7rem;
+        color: #014f53;
+      }
+      .stat-completados {
+        background: #01696f;
+        border-color: #01696f;
+      }
+      .stat-completados span {
+        color: #c5e0dc;
+      }
+      .stat-completados strong {
+        color: white;
+      }
+      @media (max-width: 640px) {
+        .contenedor,
+        .panel {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="encabezado">
+      <p class="encabezado-nombre">Martin Bastidas</p>
+      <h1>Tablero de <span>Hábitos</span></h1>
+    </header>
+
+    <form id="form-habito">
+      <input type="text" id="input-habito" placeholder="Nuevo hábito (ej. Leer 20 min)" autocomplete="off" required />
+      <button type="submit">Agregar</button>
+    </form>
+
+    <div class="contenedor">
+      <div>
+        <ul id="lista-habitos"></ul>
+      </div>
+      <div class="panel">
+        <div class="stat">
+          <span>Pendientes</span>
+          <strong id="stat-pendientes">-</strong>
+        </div>
+        <div class="stat stat-completados">
+          <span>Completados</span>
+          <strong id="stat-completadas">0</strong>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let siguienteId = 1;
+
+      // 1. Modificamos el modelo de datos para incluir la propiedad 'completado'
+      let habitos = [
+        { id: siguienteId++, texto: 'Tomar 2 litros de agua', completado: false },
+        { id: siguienteId++, texto: 'Meditar 10 minutos', completado: false },
+        { id: siguienteId++, texto: 'Programar en JavaScript', completado: false },
+      ];
+
+      const formHabitoEl = document.querySelector('#form-habito');
+      const inputHabitoEl = document.querySelector('#input-habito');
+      const listaHabitosEl = document.querySelector('#lista-habitos');
+      const statCompletadasEl = document.querySelector('#stat-completadas');
+      const statPendientesEl = document.querySelector('#stat-pendientes');
+
+      // 2. Calculamos las estadísticas dinámicamente usando filter
+      function calcularEstadisticas() {
+        const completados = habitos.filter((h) => h.completado).length;
+        const pendientes = habitos.length - completados;
+
+        statPendientesEl.textContent = String(pendientes);
+        statCompletadasEl.textContent = String(completados);
+      }
+
+      function renderizarTodo() {
+        listaHabitosEl.replaceChildren();
+
+        habitos.forEach((habito) => {
+          const li = document.createElement('li');
+          li.dataset.id = String(habito.id);
+
+          if (habito.completado) {
+            li.classList.add('completado');
+          }
+
+          const textoEl = document.createElement('span');
+          textoEl.className = 'hambito-texto';
+          textoEl.textContent = habito.texto;
+
+          const botonEliminar = document.createElement('button');
+          botonEliminar.type = 'button';
+          botonEliminar.className = 'btn-eliminar';
+          botonEliminar.dataset.accion = 'eliminar';
+          botonEliminar.textContent = 'Eliminar';
+
+          li.append(textoEl, botonEliminar);
+          listaHabitosEl.appendChild(li);
+        });
+
+        calcularEstadisticas();
+      }
+
+      formHabitoEl.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const texto = inputHabitoEl.value.trim();
+
+        if (texto !== '') {
+          habitos.push({ id: siguienteId++, texto: texto, completado: false });
+          inputHabitoEl.value = '';
+          renderizarTodo();
+        }
+      });
+
+      listaHabitosEl.addEventListener('click', (event) => {
+        const item = event.target.closest('li');
+        if (!item) return;
+
+        const id = Number(item.dataset.id);
+
+        if (event.target.closest('[data-accion="eliminar"]')) {
+          habitos = habitos.filter((h) => h.id !== id);
+          renderizarTodo();
+          return;
+        }
+
+        const habitoEncontrado = habitos.find((h) => h.id === id);
+        if (habitoEncontrado) {
+          habitoEncontrado.completado = !habitoEncontrado.completado;
+          renderizarTodo();
+        }
+      });
+
+      renderizarTodo();
+    </script>
+  </body>
+</html>
