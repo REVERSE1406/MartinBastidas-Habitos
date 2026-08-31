@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Martín Bastidas - Tablero de Hábitos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- ESTILOS AGREGADOS EN SESIÓN 2 -->
     <style>
       .habito-item {
         cursor: pointer;
@@ -25,7 +23,6 @@
     <div class="container py-5" style="max-width: 600px">
       <h1 class="text-center mb-4 text-primary">Tablero de Hábitos</h1>
 
-      <!-- Formulario base -->
       <form id="form-habito" class="d-flex gap-2 mb-4">
         <input
           type="text"
@@ -38,10 +35,28 @@
         <button type="submit" class="btn btn-primary">Agregar</button>
       </form>
 
-      <!-- Lista vacía -->
       <ul id="lista-habitos" class="list-group">
         <!-- Habitos -->
       </ul>
     </div>
+
+    <!-- Modelo de datos en JS -->
+    <script>
+      // 1.Arreglo de objetos
+      let habitos = JSON.parse(localStorage.getItem('habitos')) || [
+        { id: 1, nombre: 'Tomar 2 litros de agua', completado: false },
+        { id: 2, nombre: 'Meditar 10 minutos', completado: true },
+      ];
+
+      // 2. DOM Elements
+      const formHabitoEl = document.querySelector('#form-habito');
+      const inputHabitoEl = document.querySelector('#input-habito');
+      const listaHabitosEl = document.querySelector('#lista-habitos');
+
+      // 3. Función auxiliar usando Arrow Function para guardar en Storage
+      const guardarEnStorage = () => {
+        localStorage.setItem('habitos', JSON.stringify(habitos));
+      };
+    </script>
   </body>
 </html>
