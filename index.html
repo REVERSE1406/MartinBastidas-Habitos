@@ -4,8 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Martín Bastidas - Tablero de Hábitos</title>
-    <!-- Integración de Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- ESTILOS AGREGADOS EN SESIÓN 2 -->
+    <style>
+      .habito-item {
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .habito-completado {
+        background-color: #f8f9fa !important;
+        color: #6c757d;
+      }
+      .habito-completado .texto-habito {
+        text-decoration: line-through;
+      }
+    </style>
   </head>
   <body class="bg-light">
     <div class="container py-5" style="max-width: 600px">
@@ -24,9 +38,9 @@
         <button type="submit" class="btn btn-primary">Agregar</button>
       </form>
 
-      <!-- Lista vacía requerida en Sesión 1 -->
+      <!-- Lista vacía -->
       <ul id="lista-habitos" class="list-group">
-        <!-- Los hábitos se inyectarán aquí -->
+        <!-- Habitos -->
       </ul>
     </div>
   </body>
