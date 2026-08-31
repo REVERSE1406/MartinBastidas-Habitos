@@ -5,7 +5,7 @@ Una aplicación web sencilla para gestionar metas diarias. Mi app permite agrega
 ## Características
 * **Gestión básica:** Agrega nuevos hábitos, márcalos como completados o elimínalos.
 * **No pierdas tus datos:** Uso de `localStorage` para que la lista sobreviva al recargar la página.
-* **Manipulación del DOM:** Todo funciona en una sola página sin recargas, usando JavaScript puro.
+* **Manipulación del DOM:** Todo funciona en una sola página sin recargas, usando JavaScript.
 
 ## Tecnologías
 * HTML & CSS (Bootstrap 5)
